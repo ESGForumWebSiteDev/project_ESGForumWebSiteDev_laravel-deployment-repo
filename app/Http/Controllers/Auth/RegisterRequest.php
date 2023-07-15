@@ -14,10 +14,10 @@ class RegisterRequest extends FormRequest
   public function rules()
   {
     return [
-      'userId' => 'required|unique:users|max:20',
-      'password' => 'required|confirmed|max:255',
-      'name' => 'required|max:40',
-      'affiliation' => 'required|max:40',
+      'userId' => 'required|string|unique:users|max:20',
+      'password' => 'required|string|confirmed|max:255',
+      'name' => 'required|string|max:40',
+      'affiliation' => 'required|string|max:40',
     ];
   }
 }
