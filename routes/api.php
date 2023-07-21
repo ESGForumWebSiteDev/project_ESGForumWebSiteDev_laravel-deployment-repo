@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\CheckController;
 use App\Http\Controllers\CommitteeController;
+use App\Http\Controllers\BusinessController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -21,3 +22,8 @@ Route::prefix('auth')->group(function () {
  * 위원회 관련 API
  */
 Route::get('/committees', [CommitteeController::class, 'index'])->name('api.committees');   // TODO: 관리자 권한 필요
+
+/**
+ * 주요사업 관련 API
+ */
+Route::get('/business', [BusinessController::class, 'index'])->name('api.business');
