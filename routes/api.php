@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\CheckController;
+use App\Http\Controllers\CommitteeController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -15,3 +16,8 @@ Route::prefix('auth')->group(function () {
     Route::post('/logout', [LogoutController::class, 'logout'])->middleware(['auth:sanctum'])->name('api.logout');
     Route::post('/check', [CheckController::class, 'isLoggedIn'])->middleware(['auth:sanctum'])->name('api.check');
 });
+
+/**
+ * 위원회 관련 API
+ */
+Route::get('/committees', [CommitteeController::class, 'index'])->name('api.committees');   // TODO: 관리자 권한 필요
