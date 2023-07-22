@@ -18,25 +18,27 @@ Route::prefix('auth')->group(function () {
     Route::post('/check', [CheckController::class, 'isLoggedIn'])->middleware(['auth:sanctum'])->name('api.check');
 });
 
-/**
- * 위원회 관련 API
- */
-Route::post('/committees', [CommitteeController::class, 'store'])->name('api.committees'); // TODO: 관리자 권한 필요
-Route::get('/committees', [CommitteeController::class, 'index'])->name('api.committees');   // TODO: 관리자 권한 필요
-Route::put('/committees/{committee}', [CommitteeController::class, 'update'])->name('api.committees'); // TODO: 관리자 권한 필요
-Route::delete('/committees/{committee}', [CommitteeController::class, 'destroy'])->name('api.committees'); // TODO: 관리자 권한 필요
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    /**
+     * 위원회 관련 API
+     */
+    Route::post('/committees', [CommitteeController::class, 'store'])->name('api.committees');
+    Route::get('/committees', [CommitteeController::class, 'index'])->name('api.committees');  
+    Route::put('/committees/{committee}', [CommitteeController::class, 'update'])->name('api.committees');
+    Route::delete('/committees/{committee}', [CommitteeController::class, 'destroy'])->name('api.committees');
 
-/**
- * 위원회 멤버 관련 API
- */
-Route::post('/committees/{committee}/members', [CommitteeController::class, 'storeMember'])->name('api.committees.members'); // TODO: 관리자 권한 필요
-Route::put('/committees/{committee}/members/{member}', [CommitteeController::class, 'updateMember'])->name('api.committees.members'); // TODO: 관리자 권한 필요
-Route::delete('/committees/{committee}/members/{member}', [CommitteeController::class, 'destroyMember'])->name('api.committees.members'); // TODO: 관리자 권한 필요
+    /**
+     * 위원회 멤버 관련 API
+     */
+    Route::post('/committees/{committee}/members', [CommitteeController::class, 'storeMember'])->name('api.committees.members');
+    Route::put('/committees/{committee}/members/{member}', [CommitteeController::class, 'updateMember'])->name('api.committees.members');
+    Route::delete('/committees/{committee}/members/{member}', [CommitteeController::class, 'destroyMember'])->name('api.committees.members');
 
-/**
- * 주요사업 관련 API
- */
-Route::post('/business', [BusinessController::class, 'store'])->name('api.business'); // TODO: 관리자 권한 필요
-Route::get('/business', [BusinessController::class, 'index'])->name('api.business'); // TODO: 관리자 권한 필요
-Route::put('/business/{business}', [BusinessController::class, 'update'])->name('api.business'); // TODO: 관리자 권한 필요
-Route::delete('/business/{business}', [BusinessController::class, 'destroy'])->name('api.business'); // TODO: 관리자 권한 필요
+    /**
+     * 주요사업 관련 API
+     */
+    Route::post('/business', [BusinessController::class, 'store'])->name('api.business');
+    Route::get('/business', [BusinessController::class, 'index'])->name('api.business');
+    Route::put('/business/{business}', [BusinessController::class, 'update'])->name('api.business');
+    Route::delete('/business/{business}', [BusinessController::class, 'destroy'])->name('api.business');
+});

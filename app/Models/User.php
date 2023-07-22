@@ -42,4 +42,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * 관리자 여부 판단
+     */
+    public function isAdmin()
+    {
+        return $this->authority == 1;
+    }
 }
