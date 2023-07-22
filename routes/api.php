@@ -37,6 +37,6 @@ Route::delete('/committees/{committee}/members/{member}', [CommitteeController::
  * 주요사업 관련 API
  */
 Route::post('/business', [BusinessController::class, 'store'])->name('api.business'); // TODO: 관리자 권한 필요
-Route::get('/business', [BusinessController::class, 'index'])->name('api.business');
+Route::get('/business', [BusinessController::class, 'index'])->name('api.business'); // TODO: 관리자 권한 필요
 Route::put('/business/{business}', [BusinessController::class, 'update'])->name('api.business'); // TODO: 관리자 권한 필요
 Route::delete('/business/{business}', [BusinessController::class, 'destroy'])->name('api.business'); // TODO: 관리자 권한 필요
