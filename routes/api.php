@@ -40,14 +40,34 @@ Route::get(
     [SeminarController::class, 'index']
 )->name('api.seminars');
 
-Route::get(
-    '/seminars/{id}',
-    [SeminarController::class, 'show']
-)->name('api.seminars');
-
 Route::post(
     '/seminars',
     [SeminarController::class, 'store']
+)->name('api.seminars');
+
+Route::get(
+    '/seminars/total',
+    [SeminarController::class, 'total']
+)->name('api.seminars');
+
+Route::get(
+    '/seminars/ongoing',
+    [SeminarController::class, 'ongoingSeminars']
+)->name('api.seminars');
+
+Route::get(
+    '/seminars/past',
+    [SeminarController::class, 'pastSeminars']
+)->name('api.seminars');
+
+Route::get(
+    '/seminars/search',
+    [SeminarController::class, 'search']
+)->name('api.seminars');
+
+Route::get(
+    '/seminars/{id}',
+    [SeminarController::class, 'show']
 )->name('api.seminars');
 
 Route::put(
@@ -59,12 +79,6 @@ Route::delete(
     '/seminars/{id}',
     [SeminarController::class, 'destroy']
 )->name('api.seminars');
-
-Route::get(
-    '/seminars/total',
-    [SeminarController::class, 'total']
-)->name('api.seminars.total');
-
 
 /**
  * AboutUs API
