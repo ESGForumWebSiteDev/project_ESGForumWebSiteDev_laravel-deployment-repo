@@ -17,10 +17,17 @@ class FileController extends Controller
 
     $file = $request->file('file');
 
-    $storedFileName = $file->store('files/' . date('Ym'));
-    $storedPath = Storage::disk('local')->url($storedFileName);
+    $path = 'files/' . date('Ym');
 
-    return response()->json($storedPath, 201);
+    try {
+      $filepath = Storage::disk('s3')->put($path, $file);
+    } catch (\Exception $e) {
+      return response()->json(['upload_file_failed' => $e->getMessage()], 400);
+    }
+
+    $url = env('AWS_CLOUDFRONT_S3_URL') . '/' . $filepath;
+
+    return response()->json($url, 201);
   }
 
   public function destory(Request $request)
