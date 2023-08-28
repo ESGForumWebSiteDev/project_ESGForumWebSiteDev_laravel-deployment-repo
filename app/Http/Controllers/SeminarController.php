@@ -33,16 +33,18 @@ class SeminarController extends Controller
 
   public function index()
   {
-    $seminars = Seminar::all();
+    $seminars = Seminar::paginate(10);
 
     return response()->json($seminars);
   }
 
-  public function show(Request $request)
+  public function show($id)
   {
-    $id = $request->input('id');
-
     $seminar = Seminar::find($id);
+
+    if (!$seminar) {
+      return response()->json(['message' => 'Seminars not found'], 404);
+    }
 
     return response()->json($seminar);
   }
@@ -83,5 +85,4 @@ class SeminarController extends Controller
       'content' => 'required|string',
     ]);
   }
-
 }
