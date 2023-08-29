@@ -33,7 +33,7 @@ class SeminarController extends Controller
 
   public function index()
   {
-    $seminars = Seminar::paginate(10);
+    $seminars = Seminar::orderBy('id', 'desc')->paginate(10);
 
     return response()->json($seminars);
   }
