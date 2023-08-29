@@ -33,16 +33,18 @@ class SeminarController extends Controller
 
   public function index()
   {
-    $seminars = Seminar::all();
+    $seminars = Seminar::paginate(10);
 
     return response()->json($seminars);
   }
 
-  public function show(Request $request)
+  public function show($id)
   {
-    $id = $request->input('id');
-
     $seminar = Seminar::find($id);
+
+    if (!$seminar) {
+      return response()->json(['message' => 'Seminars not found'], 404);
+    }
 
     return response()->json($seminar);
   }
@@ -70,6 +72,51 @@ class SeminarController extends Controller
     return response()->json(['message' => 'Seminars deleted successfully']);
   }
 
+  public function ongoingSeminars(Request $request)
+  {
+    $query = Seminar::where('date_start', '<=', now())->where('date_end', '>=', now());
+
+    if ($request->has('subject')) {
+      $query->where('subject', 'like', '%' . $request->get('subject') . '%');
+    } else if ($request->has('host')) {
+      $query->where('host', 'like', '%' . $request->get('host') . '%');
+    }
+
+    $seminars = $query->paginate(10);
+
+    return response()->json($seminars);
+  }
+
+  public function pastSeminars(Request $request)
+  {
+    $query = Seminar::where('date_end', '<', now());
+
+    if ($request->has('subject')) {
+      $query->where('subject', 'like', '%' . $request->get('subject') . '%');
+    } else if ($request->has('host')) {
+      $query->where('host', 'like', '%' . $request->get('host') . '%');
+    }
+
+    $seminars = $query->paginate(10);
+
+    return response()->json($seminars);
+  }
+
+  public function search(Request $request)
+  {
+    $query = Seminar::query();
+
+    if ($request->has('subject')) {
+      $query->where('subject', 'like', '%' . $request->get('subject') . '%');
+    }
+
+    if ($request->has('host')) {
+      $query->where('host', 'like', '%' . $request->get('host') . '%');
+    }
+
+    return response()->json($query->paginate(10));
+  }
+
   public function validateRequest(Request $request)
   {
     $request->validate([
@@ -83,5 +130,4 @@ class SeminarController extends Controller
       'content' => 'required|string',
     ]);
   }
-
 }
