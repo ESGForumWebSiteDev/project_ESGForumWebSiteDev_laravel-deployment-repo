@@ -10,6 +10,7 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HistoriesController;
 use App\Http\Controllers\SeminarController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -79,6 +80,44 @@ Route::delete(
   '/seminars/{id}',
   [SeminarController::class, 'destroy']
 )->name('api.seminars');
+
+/**
+ * Post API
+ */
+Route::get(
+    '/post',
+    [PostController::class, 'index']
+)->name('api.post');
+
+Route::post(
+    '/post',
+    [PostController::class, 'store']
+)->name('api.post');
+
+Route::get(
+    '/post/total',
+    [PostController::class, 'total']
+)->name('api.post');
+
+Route::get(
+    '/post/search',
+    [PostController::class, 'search']
+)->name('api.post');
+
+Route::get(
+    '/post/{id}',
+    [PostController::class, 'show']
+)->name('api.post');
+
+Route::put(
+    '/post/{id}',
+    [PostController::class, 'update']
+)->name('api.post');
+
+Route::delete(
+    '/post/{id}',
+    [PostController::class, 'destroy']
+)->name('api.post');
 
 /**
  * AboutUs API
