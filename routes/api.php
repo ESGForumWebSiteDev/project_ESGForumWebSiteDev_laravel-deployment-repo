@@ -10,6 +10,7 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HistoriesController;
 use App\Http\Controllers\SeminarController;
+use App\Http\Controllers\ReferenceController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -79,6 +80,44 @@ Route::delete(
     '/seminars/{id}',
     [SeminarController::class, 'destroy']
 )->name('api.seminars');
+
+/**
+ * Reference API
+ */
+Route::get(
+    '/reference',
+    [ReferenceController::class, 'index']
+)->name('api.reference');
+
+Route::post(
+    '/reference',
+    [ReferenceController::class, 'store']
+)->name('api.reference');
+
+Route::get(
+    '/reference/total',
+    [ReferenceController::class, 'total']
+)->name('api.reference');
+
+Route::get(
+    '/reference/search',
+    [ReferenceController::class, 'search']
+)->name('api.reference');
+
+Route::get(
+    '/reference/{id}',
+    [ReferenceController::class, 'show']
+)->name('api.reference');
+
+Route::put(
+    '/reference/{id}',
+    [ReferenceController::class, 'update']
+)->name('api.reference');
+
+Route::delete(
+    '/reference/{id}',
+    [ReferenceController::class, 'destroy']
+)->name('api.reference');
 
 /**
  * AboutUs API
