@@ -40,38 +40,45 @@ Route::get(
   [SeminarController::class, 'index']
 )->name('api.seminars.index');
 
-Route::get(
-  '/seminars',
-  [SeminarController::class, 'show']
-)->name('api.seminars.show');
-
 Route::post(
   '/seminars',
   [SeminarController::class, 'store']
 )->name('api.seminars.store');
-
-Route::put(
-  '/seminars/{id}',
-  [SeminarController::class, 'update']
-)->name('api.seminars.update');
-
-Route::delete(
-  '/seminars/{id}',
-  [SeminarController::class, 'destroy']
-)->name('api.seminars.destroy');
 
 Route::get(
   '/seminars/total',
   [SeminarController::class, 'total']
 )->name('api.seminars.total');
 
-// FIXME: 접속 확인용
 Route::get(
-  '/test',
-  function () {
-    echo '111';
-  }
-);
+  '/seminars/ongoing',
+  [SeminarController::class, 'ongoingSeminars']
+)->name('api.seminars.ongoing');
+
+Route::get(
+  '/seminars/past',
+  [SeminarController::class, 'pastSeminars']
+)->name('api.seminars.past');
+
+Route::get(
+  '/seminars/search',
+  [SeminarController::class, 'search']
+)->name('api.seminars.search');
+
+Route::get(
+  '/seminars/{id}',
+  [SeminarController::class, 'show']
+)->name('api.seminars.id');
+
+Route::put(
+  '/seminars/{id}',
+  [SeminarController::class, 'update']
+)->name('api.seminars');
+
+Route::delete(
+  '/seminars/{id}',
+  [SeminarController::class, 'destroy']
+)->name('api.seminars');
 
 /**
  * AboutUs API
@@ -121,7 +128,7 @@ Route::post(
 Route::delete(
   '/upload',
   [FileController::class, 'destory']
-)->name('api.upload.destory');
+)->name('api.upload');
 
 
 /**
