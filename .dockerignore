@@ -1,0 +1,6 @@
+logs/
+.git
+*.md
+.cache
+.env*
+vendor
