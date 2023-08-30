@@ -38,33 +38,40 @@ Route::get('/business', [BusinessController::class, 'index'])->name('api.busines
 Route::get(
   '/seminars',
   [SeminarController::class, 'index']
-)->name('api.seminars');
+)->name('api.seminars.index');
 
 Route::get(
   '/seminars',
   [SeminarController::class, 'show']
-)->name('api.seminars');
+)->name('api.seminars.show');
 
 Route::post(
   '/seminars',
   [SeminarController::class, 'store']
-)->name('api.seminars');
+)->name('api.seminars.store');
 
 Route::put(
   '/seminars/{id}',
   [SeminarController::class, 'update']
-)->name('api.seminars');
+)->name('api.seminars.update');
 
 Route::delete(
   '/seminars/{id}',
   [SeminarController::class, 'destroy']
-)->name('api.seminars');
+)->name('api.seminars.destroy');
 
 Route::get(
   '/seminars/total',
   [SeminarController::class, 'total']
 )->name('api.seminars.total');
 
+// FIXME: 접속 확인용
+Route::get(
+  '/test',
+  function () {
+    echo '111';
+  }
+);
 
 /**
  * AboutUs API
@@ -114,7 +121,7 @@ Route::post(
 Route::delete(
   '/upload',
   [FileController::class, 'destory']
-)->name('api.upload');
+)->name('api.upload.destory');
 
 
 /**
