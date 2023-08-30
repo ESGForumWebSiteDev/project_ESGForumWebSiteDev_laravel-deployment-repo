@@ -10,7 +10,7 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HistoriesController;
 use App\Http\Controllers\SeminarController;
-use App\Http\Controllers\ReferenceController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -82,42 +82,42 @@ Route::delete(
 )->name('api.seminars');
 
 /**
- * Reference API
+ * Post API
  */
 Route::get(
-    '/reference',
-    [ReferenceController::class, 'index']
-)->name('api.reference');
+    '/post',
+    [PostController::class, 'index']
+)->name('api.post');
 
 Route::post(
-    '/reference',
-    [ReferenceController::class, 'store']
-)->name('api.reference');
+    '/post',
+    [PostController::class, 'store']
+)->name('api.post');
 
 Route::get(
-    '/reference/total',
-    [ReferenceController::class, 'total']
-)->name('api.reference');
+    '/post/total',
+    [PostController::class, 'total']
+)->name('api.post');
 
 Route::get(
-    '/reference/search',
-    [ReferenceController::class, 'search']
-)->name('api.reference');
+    '/post/search',
+    [PostController::class, 'search']
+)->name('api.post');
 
 Route::get(
-    '/reference/{id}',
-    [ReferenceController::class, 'show']
-)->name('api.reference');
+    '/post/{id}',
+    [PostController::class, 'show']
+)->name('api.post');
 
 Route::put(
-    '/reference/{id}',
-    [ReferenceController::class, 'update']
-)->name('api.reference');
+    '/post/{id}',
+    [PostController::class, 'update']
+)->name('api.post');
 
 Route::delete(
-    '/reference/{id}',
-    [ReferenceController::class, 'destroy']
-)->name('api.reference');
+    '/post/{id}',
+    [PostController::class, 'destroy']
+)->name('api.post');
 
 /**
  * AboutUs API

@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 
-class ReferenceController extends Controller
+class PostController extends Controller
 {
     public function total()
     {
-        $references = Post::count();
+        $post = Post::count();
 
-        return response()->json(['total' => $references]);
+        return response()->json(['total' => $post]);
     }
 
     public function store(Request $request)
@@ -19,19 +19,19 @@ class ReferenceController extends Controller
         self::validateRequest($request);
 
         try {
-            $references = Post::create($request->all());
+            $post = Post::create($request->all());
         } catch (\Exception $e) {
-            return response()->json(['message' => 'References creation failed'], 409);
+            return response()->json(['message' => 'Post creation failed'], 409);
         }
 
-        return response()->json($references, 201);
+        return response()->json($post, 201);
     }
 
     public function index()
     {
-        $references = Post::orderBy('id', 'desc')->paginate(10);
+        $post = Post::orderBy('id', 'desc')->paginate(10);
 
-        return response()->json($references);
+        return response()->json($post);
     }
 
     public function show($id)
@@ -39,7 +39,7 @@ class ReferenceController extends Controller
         $post = Post::find($id);
 
         if (!$post) {
-            return response()->json(['message' => 'References not found'], 404);
+            return response()->json(['message' => 'Post not found'], 404);
         }
 
         return response()->json($post);
@@ -52,7 +52,7 @@ class ReferenceController extends Controller
         try {
             $post = Post::findOrFail($id);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'References not found'], 404);
+            return response()->json(['message' => 'Post not found'], 404);
         }
 
         $post->update($request->all());
@@ -65,7 +65,7 @@ class ReferenceController extends Controller
         $post = Post::findOrFail($id);
         $post->delete();
 
-        return response()->json(['message' => 'References deleted successfully']);
+        return response()->json(['message' => 'Post deleted successfully']);
     }
 
     public function search(Request $request)
