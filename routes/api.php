@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -9,6 +10,9 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CommitteeMemberController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\FileController;
+use App\Http\Controllers\HistoriesController;
+use App\Http\Controllers\SeminarController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -30,6 +34,105 @@ Route::get('/committees', [CommitteeController::class, 'index'])->name('api.comm
  * 주요사업 조회 API
  */
 Route::get('/business', [BusinessController::class, 'index'])->name('api.business');
+
+/**
+ * Seminars API
+ */
+Route::get(
+    '/seminars',
+    [SeminarController::class, 'index']
+)->name('api.seminars');
+
+Route::post(
+    '/seminars',
+    [SeminarController::class, 'store']
+)->name('api.seminars');
+
+Route::get(
+    '/seminars/total',
+    [SeminarController::class, 'total']
+)->name('api.seminars');
+
+Route::get(
+    '/seminars/ongoing',
+    [SeminarController::class, 'ongoingSeminars']
+)->name('api.seminars');
+
+Route::get(
+    '/seminars/past',
+    [SeminarController::class, 'pastSeminars']
+)->name('api.seminars');
+
+Route::get(
+    '/seminars/search',
+    [SeminarController::class, 'search']
+)->name('api.seminars');
+
+Route::get(
+    '/seminars/{id}',
+    [SeminarController::class, 'show']
+)->name('api.seminars');
+
+Route::put(
+    '/seminars/{id}',
+    [SeminarController::class, 'update']
+)->name('api.seminars');
+
+Route::delete(
+    '/seminars/{id}',
+    [SeminarController::class, 'destroy']
+)->name('api.seminars');
+
+/**
+ * AboutUs API
+ */
+Route::get(
+    '/aboutus/objective',
+    [AboutUsController::class, 'showObjective']
+)->name('api.aboutus.objective');
+
+Route::get(
+    '/aboutus/vision',
+    [AboutUsController::class, 'showVision']
+)->name('api.aboutus.vision');
+
+Route::get(
+    '/aboutus/histories',
+    [HistoriesController::class, 'index']
+)->name('api.aboutus.histories');
+
+Route::get(
+    '/aboutus/greetings',
+    [AboutUsController::class, 'showGreetings']
+)->name('api.aboutus.greetings');
+
+Route::get(
+    '/aboutus/rules',
+    [AboutUsController::class, 'showRules']
+)->name('api.aboutus.rules');
+
+Route::get(
+    '/aboutus/ci_logo',
+    [AboutUsController::class, 'showCiLogo']
+)->name('api.aboutus.ci_logo');
+
+Route::post(
+    '/aboutus',
+    [AboutUsController::class, 'store']
+)->name('api.aboutus');
+
+
+// File Upload API
+Route::post(
+    '/upload',
+    [FileController::class, 'store']
+)->name('api.upload');
+
+Route::delete(
+    '/upload',
+    [FileController::class, 'destory']
+)->name('api.upload');
+
 
 /**
  * 관리자 권한 요함
