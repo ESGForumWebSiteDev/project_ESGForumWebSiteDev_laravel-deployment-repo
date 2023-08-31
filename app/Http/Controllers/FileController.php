@@ -46,7 +46,7 @@ class FileController extends Controller
   public function validateRequest(Request $request)
   {
     $request->validate([
-      'file' => 'required|mimes:jpeg,png,jpg,gif|max:5120',
+      'file' => 'required|mimes:jpeg,png,jpg,gif,hwp,pdf,txt,ppt,pptx,docx,zip,xlsx',
     ]);
   }
 }
