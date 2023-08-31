@@ -165,7 +165,6 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     /**
      * 사용자 관련 API
      */
-    Route::get('/users/subscribers', [UserController::class, 'subscribers'])->name('api.users');
     Route::get('/users', [UserController::class, 'index'])->name('api.users');
     Route::put('/users/approval', [UserController::class, 'approval'])->name('api.users');
 
