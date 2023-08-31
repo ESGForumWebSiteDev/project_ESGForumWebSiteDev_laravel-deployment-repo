@@ -13,124 +13,153 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\HistoriesController;
 use App\Http\Controllers\SeminarController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /**
  * 로그인 관련 API
  */
 Route::prefix('auth')->group(function () {
-    Route::post('/login', [LoginController::class, 'login'])->name('api.login');
-    Route::post('/register', [RegisterController::class, 'store'])->name('api.register');
-    Route::post('/logout', [LogoutController::class, 'logout'])->middleware(['auth:sanctum'])->name('api.logout');
-    Route::post('/refresh_token', [RefreshTokenController::class, 'refreshToken'])->name('api.refresh_token');
+  Route::post('/login', [LoginController::class, 'login'])->name('api.login');
+  Route::post('/register', [RegisterController::class, 'store'])->name('api.register');
+  Route::post('/logout', [LogoutController::class, 'logout'])->middleware(['auth:sanctum'])->name('api.logout');
+  Route::post('/refresh_token', [RefreshTokenController::class, 'refreshToken'])->name('api.refresh_token');
 });
-
-/**
- * 위원회 조회 API
- */
-Route::get('/committees', [CommitteeController::class, 'index'])->name('api.committees');
-
-/**
- * 주요사업 조회 API
- */
-Route::get('/business', [BusinessController::class, 'index'])->name('api.business');
 
 /**
  * Seminars API
  */
 Route::get(
-    '/seminars',
-    [SeminarController::class, 'index']
-)->name('api.seminars');
+  '/seminars',
+  [SeminarController::class, 'index']
+)->name('api.seminars.index');
 
 Route::post(
-    '/seminars',
-    [SeminarController::class, 'store']
-)->name('api.seminars');
+  '/seminars',
+  [SeminarController::class, 'store']
+)->name('api.seminars.store');
 
 Route::get(
-    '/seminars/total',
-    [SeminarController::class, 'total']
-)->name('api.seminars');
+  '/seminars/total',
+  [SeminarController::class, 'total']
+)->name('api.seminars.total');
 
 Route::get(
-    '/seminars/ongoing',
-    [SeminarController::class, 'ongoingSeminars']
-)->name('api.seminars');
+  '/seminars/ongoing',
+  [SeminarController::class, 'ongoingSeminars']
+)->name('api.seminars.ongoing');
 
 Route::get(
-    '/seminars/past',
-    [SeminarController::class, 'pastSeminars']
-)->name('api.seminars');
+  '/seminars/past',
+  [SeminarController::class, 'pastSeminars']
+)->name('api.seminars.past');
 
 Route::get(
-    '/seminars/search',
-    [SeminarController::class, 'search']
-)->name('api.seminars');
+  '/seminars/search',
+  [SeminarController::class, 'search']
+)->name('api.seminars.search');
 
 Route::get(
-    '/seminars/{id}',
-    [SeminarController::class, 'show']
-)->name('api.seminars');
+  '/seminars/{id}',
+  [SeminarController::class, 'show']
+)->name('api.seminars.id');
 
 Route::put(
-    '/seminars/{id}',
-    [SeminarController::class, 'update']
+  '/seminars/{id}',
+  [SeminarController::class, 'update']
 )->name('api.seminars');
 
 Route::delete(
-    '/seminars/{id}',
-    [SeminarController::class, 'destroy']
+  '/seminars/{id}',
+  [SeminarController::class, 'destroy']
 )->name('api.seminars');
+
+/**
+ * Post API
+ */
+Route::get(
+    '/post',
+    [PostController::class, 'index']
+)->name('api.post');
+
+Route::post(
+    '/post',
+    [PostController::class, 'store']
+)->name('api.post');
+
+Route::get(
+    '/post/total',
+    [PostController::class, 'total']
+)->name('api.post');
+
+Route::get(
+    '/post/search',
+    [PostController::class, 'search']
+)->name('api.post');
+
+Route::get(
+    '/post/{id}',
+    [PostController::class, 'show']
+)->name('api.post');
+
+Route::put(
+    '/post/{id}',
+    [PostController::class, 'update']
+)->name('api.post');
+
+Route::delete(
+    '/post/{id}',
+    [PostController::class, 'destroy']
+)->name('api.post');
 
 /**
  * AboutUs API
  */
 Route::get(
-    '/aboutus/objective',
-    [AboutUsController::class, 'showObjective']
+  '/aboutus/objective',
+  [AboutUsController::class, 'showObjective']
 )->name('api.aboutus.objective');
 
 Route::get(
-    '/aboutus/vision',
-    [AboutUsController::class, 'showVision']
+  '/aboutus/vision',
+  [AboutUsController::class, 'showVision']
 )->name('api.aboutus.vision');
 
 Route::get(
-    '/aboutus/histories',
-    [HistoriesController::class, 'index']
+  '/aboutus/histories',
+  [HistoriesController::class, 'index']
 )->name('api.aboutus.histories');
 
 Route::get(
-    '/aboutus/greetings',
-    [AboutUsController::class, 'showGreetings']
+  '/aboutus/greetings',
+  [AboutUsController::class, 'showGreetings']
 )->name('api.aboutus.greetings');
 
 Route::get(
-    '/aboutus/rules',
-    [AboutUsController::class, 'showRules']
+  '/aboutus/rules',
+  [AboutUsController::class, 'showRules']
 )->name('api.aboutus.rules');
 
 Route::get(
-    '/aboutus/ci_logo',
-    [AboutUsController::class, 'showCiLogo']
+  '/aboutus/ci_logo',
+  [AboutUsController::class, 'showCiLogo']
 )->name('api.aboutus.ci_logo');
 
 Route::post(
-    '/aboutus',
-    [AboutUsController::class, 'store']
+  '/aboutus',
+  [AboutUsController::class, 'store']
 )->name('api.aboutus');
 
 
 // File Upload API
 Route::post(
-    '/upload',
-    [FileController::class, 'store']
+  '/upload',
+  [FileController::class, 'store']
 )->name('api.upload');
 
 Route::delete(
-    '/upload',
-    [FileController::class, 'destory']
+  '/upload',
+  [FileController::class, 'destory']
 )->name('api.upload');
 
 
