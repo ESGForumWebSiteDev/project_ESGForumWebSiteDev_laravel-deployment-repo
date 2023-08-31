@@ -13,6 +13,8 @@ class User extends Authenticatable implements JWTSubject
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $primaryKey = 'email';
+    protected $keyType = 'string';
+
 
     /**
      * The attributes that are mass assignable.
