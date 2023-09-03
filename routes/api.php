@@ -40,14 +40,9 @@ Route::post(
 )->name('api.seminars.store');
 
 Route::get(
-  '/seminars/total',
-  [SeminarController::class, 'total']
-)->name('api.seminars.total');
-
-Route::get(
-  '/seminars/ongoing',
-  [SeminarController::class, 'ongoingSeminars']
-)->name('api.seminars.ongoing');
+    '/seminars/ongoing',
+    [SeminarController::class, 'ongoingSeminars']
+)->name('api.seminars');
 
 Route::get(
   '/seminars/past',
@@ -85,11 +80,6 @@ Route::get(
 Route::post(
     '/post',
     [PostController::class, 'store']
-)->name('api.post');
-
-Route::get(
-    '/post/total',
-    [PostController::class, 'total']
 )->name('api.post');
 
 Route::get(

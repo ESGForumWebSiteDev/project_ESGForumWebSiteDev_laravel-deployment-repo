@@ -4,16 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\File;
 
 class PostController extends Controller
 {
-    public function total()
-    {
-        $post = Post::count();
-
-        return response()->json(['total' => $post]);
-    }
-
     public function store(Request $request)
     {
         self::validateRequest($request);
@@ -41,6 +35,12 @@ class PostController extends Controller
         if (!$post) {
             return response()->json(['message' => 'Post not found'], 404);
         }
+
+        $files = File::where('post_id', $id)->get()->map(function ($file) {
+            return ['url' => $file->url];
+        });
+
+        $post->files = $files;
 
         return response()->json($post);
     }
