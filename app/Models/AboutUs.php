@@ -18,5 +18,8 @@ class AboutUs extends Model
     'greetings',
     'rules',
     'ci_logo',
+    'chairman_position',
+    'chairman_name',
+    'chairman_image',
   ];
 }
