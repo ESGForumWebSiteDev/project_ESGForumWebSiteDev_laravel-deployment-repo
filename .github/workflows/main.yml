@@ -33,3 +33,14 @@ jobs:
             ghcr.io/esgforumwebsitedev/esgforum-laravel:${{ env.RELEASE_VERSION }}
           ache-from: type=gha # 여기서 gha 는 Guthub Actions 용 캐시를 의미합니다.
           cache-to: type=gha,mode=max
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AWS_HOST }} # EC2 인스턴스 퍼블릭 DNS
+          username: ec2-user
+          key: ${{ secrets.AWS_SSH_KEY }} # pem 키--
+          # 도커 작업
+          script: |
+            docker stop esg-backend-laravel
+            cd ~/app
+            docker compose-up -d
