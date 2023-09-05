@@ -7,6 +7,12 @@ use App\Models\Member;
 
 class MemberController extends Controller
 {
+    public function count()
+    {
+        $count = Member::count();
+        return response()->json($count);
+    }
+
     public function index()
     {
         $members = Member::all();
