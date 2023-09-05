@@ -26,6 +26,7 @@ Route::prefix('auth')->group(function () {
   Route::post('/refresh_token', [RefreshTokenController::class, 'refreshToken'])->name('api.refresh_token');
 });
 
+Route::get('/business', [BusinessController::class, 'index']);
 /**
  * Seminars API
  */
@@ -78,38 +79,38 @@ Route::delete(
  * Post API
  */
 Route::get(
-    '/post',
-    [PostController::class, 'index']
+  '/post',
+  [PostController::class, 'index']
 )->name('api.post');
 
 Route::post(
-    '/post',
-    [PostController::class, 'store']
+  '/post',
+  [PostController::class, 'store']
 )->name('api.post');
 
 Route::get(
-    '/post/total',
-    [PostController::class, 'total']
+  '/post/total',
+  [PostController::class, 'total']
 )->name('api.post');
 
 Route::get(
-    '/post/search',
-    [PostController::class, 'search']
+  '/post/search',
+  [PostController::class, 'search']
 )->name('api.post');
 
 Route::get(
-    '/post/{id}',
-    [PostController::class, 'show']
+  '/post/{id}',
+  [PostController::class, 'show']
 )->name('api.post');
 
 Route::put(
-    '/post/{id}',
-    [PostController::class, 'update']
+  '/post/{id}',
+  [PostController::class, 'update']
 )->name('api.post');
 
 Route::delete(
-    '/post/{id}',
-    [PostController::class, 'destroy']
+  '/post/{id}',
+  [PostController::class, 'destroy']
 )->name('api.post');
 
 /**
@@ -167,40 +168,49 @@ Route::delete(
  * 관리자 권한 요함
  */
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    /**
-     * 위원회 관련 API
-     */
-    Route::get('/committees', [CommitteeController::class, 'index'])->name('api.committees');
-    Route::post('/committees', [CommitteeController::class, 'store'])->name('api.committees');
-    Route::get('/committee/{id}', [CommitteeController::class, 'find'])->name('api.committee');
-    Route::put('/committees/{id}', [CommitteeController::class, 'update'])->name('api.committees');
-    Route::delete('/committee/{id}', [CommitteeController::class, 'destroy'])->name('api.committees');
+  /** 
+  * 통계 데이터 
+  */
+  Route::get('/committees/count', [CommitteeController::class, 'count'])->name('api.committees');
+  Route::get('/members/count', [MemberController::class, 'count'])->name('api.committees');
+  Route::get('/users/count', [UserController::class, 'count'])->name('api.committees');
+/**
+ * 위원회 관련 API
+ */
 
-    /**
-     * 위원회 멤버 관련 API
-     */
-    Route::get('/committees/{id}/members', [CommitteeMemberController::class, 'index'])->name('api.committees');
-    Route::delete('/committees/{c_id}/members/{m_id}', [CommitteeMemberController::class, 'destroy'])->name('api.committees.members');
-    Route::post('/committees/{id}/members', [CommitteeMemberController::class, 'store'])->name('api.committees.members');
-    Route::put('/committees/{c_id}/members/{m_id}', [CommitteeMemberController::class, 'update'])->name('api.committees.members');
+Route::get('/committees', [CommitteeController::class, 'index'])->name('api.committees');
+Route::post('/committees', [CommitteeController::class, 'store'])->name('api.committees');
 
-    /**
-     * 주요사업 관련 API
-     */
-    Route::post('/business', [BusinessController::class, 'store'])->name('api.business');
-    Route::put('/business/{business}', [BusinessController::class, 'update'])->name('api.business');
-    Route::delete('/business/{business}', [BusinessController::class, 'destroy'])->name('api.business');
+Route::get('/committee/{id}', [CommitteeController::class, 'find'])->name('api.committee');
+Route::put('/committee/{id}', [CommitteeController::class, 'update'])->name('api.committees');
+Route::delete('/committee/{id}', [CommitteeController::class, 'destroy'])->name('api.committees');
 
-    /**
-     * 사용자 관련 API
-     */
-    Route::get('/users', [UserController::class, 'index'])->name('api.users');
-    Route::put('/users/approval', [UserController::class, 'approval'])->name('api.users');
+/**
+ * 위원회 멤버 관련 API
+ */
+Route::get('/committee/{id}/members', [CommitteeMemberController::class, 'index'])->name('api.committees');
+Route::post('/committee/{id}/members', [CommitteeMemberController::class, 'store'])->name('api.committees.members');
+Route::put('/committee/{c_id}/members/{m_id}', [CommitteeMemberController::class, 'update'])->name('api.committees.members');
+Route::delete('/committee/{c_id}/members/{m_id}', [CommitteeMemberController::class, 'destroy'])->name('api.committees.members');
 
-    /**
-     * 회원 관련 API
-     */
-    Route::get('/members', [MemberController::class, 'index'])->name('api.members');
-    Route::put('/members', [MemberController::class, 'update'])->name('api.members');
-    Route::delete('/members/{id}', [MemberController::class, 'destroy'])->name('api.members');
+/**
+ * 주요사업 관련 API
+ */
+Route::post('/business', [BusinessController::class, 'store'])->name('api.business');
+Route::put('/business/{business}', [BusinessController::class, 'update'])->name('api.business');
+Route::delete('/business/{business}', [BusinessController::class, 'destroy'])->name('api.business');
+
+/**
+ * 사용자 관련 API
+ */
+Route::get('/users', [UserController::class, 'index'])->name('api.users');
+Route::delete('/users/{email}', [UserController::class, 'destroy'])->name('api.users');
+Route::put('/users/approval', [UserController::class, 'approval'])->name('api.users');
+
+/**
+ * 회원 관련 API
+ */
+Route::get('/members', [MemberController::class, 'index'])->name('api.members');
+Route::put('/members', [MemberController::class, 'update'])->name('api.members');
+Route::delete('/members/{id}', [MemberController::class, 'destroy'])->name('api.members');
 });
