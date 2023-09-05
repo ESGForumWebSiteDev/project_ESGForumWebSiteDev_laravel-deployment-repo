@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Seminar;
+use App\Models\File;
 use Illuminate\Http\Request;
 
 /**
@@ -11,13 +12,6 @@ use Illuminate\Http\Request;
 
 class SeminarController extends Controller
 {
-  public function total()
-  {
-    $seminars = Seminar::count();
-
-    return response()->json(['total' => $seminars]);
-  }
-
   public function store(Request $request)
   {
     self::validateRequest($request);
@@ -45,6 +39,12 @@ class SeminarController extends Controller
     if (!$seminar) {
       return response()->json(['message' => 'Seminars not found'], 404);
     }
+
+    $files = File::where('post_id', $id)->get()->map(function ($file) {
+      return ['url' => $file->url];
+    });
+
+    $seminar->files = $files;
 
     return response()->json($seminar);
   }
