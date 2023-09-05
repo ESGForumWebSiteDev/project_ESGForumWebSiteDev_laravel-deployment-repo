@@ -40,7 +40,17 @@ class AboutUsController extends Controller
 
   public function showGreetings()
   {
-    $greetings = AboutUs::select('greetings')->get()->last();
+    $greet = AboutUs::select('greetings')->get()->last();
+    $chairman = AboutUs::select('chairman_position', 'chairman_name', 'chairman_image')->get()->last();
+
+    $greetings = [
+      'greetings' => $greet->greetings,
+      'chairman' => [
+        'position' => $chairman->chairman_position,
+        'name' => $chairman->chairman_name,
+        'image' => $chairman->chairman_image,
+      ]
+    ];
 
     return response()->json($greetings);
   }
