@@ -9,7 +9,12 @@ class Committee extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'explanation'
+    ];
+
+    protected $primaryKey = 'id';
 
     public function committeeMembers()
     {
