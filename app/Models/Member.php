@@ -25,7 +25,7 @@ class Member extends Model
     public function committees()
     {
         return $this->belongsToMany(Committee::class, 'committee_members', 'id2', 'cId')
-                ->withPivot('note')
-                ->withTimestamps();
+            ->withPivot('note')
+            ->withTimestamps();
     }
 }
