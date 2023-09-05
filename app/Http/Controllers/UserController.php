@@ -4,18 +4,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Exception;
 
 class UserController extends Controller
-{
-    public function index()
-    {
-        $users = User::where('authority', 0)->get();
-        $applicants = User::where('authority', null)->get();
 
+{
+    public function count()
+    {
+        $users = User::where('authority', 0)->get()->count();
+        $applicants = User::where('authority', null)->get()->count();
+        
         return response()->json([
             'users' => $users,
             'applicants' => $applicants
         ]);
+    }
+
+    public function index()
+    {
+        try {
+            $users = User::where('authority', 0)->get();
+            $applicants = User::where('authority', null)->get();
+
+            return response()->json([
+                'users' => $users,
+                'applicants' => $applicants
+            ]);
+        } catch (Exception $e) {
+            return response()->json('An error occurred.', $e->getCode());
+        }
     }
 
     public function approval(Request $request)
