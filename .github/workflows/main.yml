@@ -43,4 +43,4 @@ jobs:
           script: |
             docker stop esg-backend-laravel
             cd ~/app
-            docker compose-up -d
+            docker compose up -d
