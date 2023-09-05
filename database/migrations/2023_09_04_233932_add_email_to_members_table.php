@@ -10,8 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->text('refresh_token')->nullable()->after('authority');
+        Schema::table('members', function (Blueprint $table) {
+            $table->string('email')->after('affiliation')->nullable();
         });
     }
 
@@ -20,8 +20,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('refresh_token');
+        Schema::table('members', function (Blueprint $table) {
+            $table->dropColumn('email');
         });
     }
 };
