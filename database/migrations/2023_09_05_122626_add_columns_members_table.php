@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('members', function (Blueprint $table) {
-            $table->string('password', 255)->default('applicant');
+            $table->string('password', 255);
             $table->integer('authority')->nullable()->comment('null - 승인X, 0 - 사용자, 1 - 관리자');
             $table->text('refresh_token')->nullable()->afrer('authority');
         });
