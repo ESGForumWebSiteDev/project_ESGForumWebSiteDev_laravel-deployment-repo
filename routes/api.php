@@ -163,11 +163,9 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
   */
   Route::get('/committees/count', [CommitteeController::class, 'count'])->name('api.committees');
   Route::get('/members/count', [MemberController::class, 'count'])->name('api.committees');
-  Route::get('/users/count', [UserController::class, 'count'])->name('api.committees');
 /**
  * 위원회 관련 API
  */
-
 Route::get('/committees', [CommitteeController::class, 'index'])->name('api.committees');
 Route::post('/committees', [CommitteeController::class, 'store'])->name('api.committees');
 
@@ -191,16 +189,12 @@ Route::put('/business/{business}', [BusinessController::class, 'update'])->name(
 Route::delete('/business/{business}', [BusinessController::class, 'destroy'])->name('api.business');
 
 /**
- * 사용자 관련 API
- */
-Route::get('/users', [UserController::class, 'index'])->name('api.users');
-Route::delete('/users/{email}', [UserController::class, 'destroy'])->name('api.users');
-Route::put('/users/approval', [UserController::class, 'approval'])->name('api.users');
-
-/**
  * 회원 관련 API
  */
+Route::get('/applicants', [MemberController::class, 'applicants'])->name('api.members');
 Route::get('/members', [MemberController::class, 'index'])->name('api.members');
+Route::post('/members', [MemberController::class, 'store'])->name('api.members');
 Route::put('/members', [MemberController::class, 'update'])->name('api.members');
 Route::delete('/members/{id}', [MemberController::class, 'destroy'])->name('api.members');
+Route::put('/members/approval', [MemberController::class, 'approval'])->name('api.members');
 });
