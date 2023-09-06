@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Member;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -16,7 +16,7 @@ class RefreshTokenController extends Controller
         $token = $request->input('refreshToken');
 
         try {
-            $user = User::where('refresh_token', $token)->firstOrFail();
+            $user = Member::where('refresh_token', $token)->firstOrFail();
 
             $newAccessToken = JWTAuth::fromUser($user, ['exp' => now()->addMinutes(60)->timestamp]);
 

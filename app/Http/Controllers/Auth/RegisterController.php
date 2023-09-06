@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Member;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,14 +14,16 @@ class RegisterController extends Controller
    */
   public function store(RegisterRequest $request)
   {
-    $user = User::create([
+    $member = Member::create([
+      'name' => $request->name,
+      'note' => null,
+      'affiliation' => $request->affiliation,
+      'authority' => null,
       'email' => $request->email,
       'password' => Hash::make($request->password),
-      'name' => $request->name,
-      'affiliation' => $request->affiliation,
     ]);
 
-    $token = $user->createToken('auth_token')->plainTextToken;
+    $token = $member->createToken('auth_token')->plainTextToken;
 
     return response()->json([
       'access_token' => $token,
