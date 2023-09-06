@@ -12,7 +12,10 @@ class Member extends Model
     protected $fillable = [
         'name',
         'note',
-        'affiliation'
+        'affiliation',
+        'authority',
+        'email',
+        'password',
     ];
 
     protected $primaryKey = 'id';
@@ -27,5 +30,47 @@ class Member extends Model
         return $this->belongsToMany(Committee::class, 'committee_members', 'id2', 'cId')
             ->withPivot('note')
             ->withTimestamps();
+    }
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     * 
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return (string)$this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     * 
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    /**
+     * 관리자 여부 판단
+     */
+    public function isAdmin()
+    {
+        return $this->authority == 1;
     }
 }

@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class CommitteeController extends Controller
 {
+    public function count()
+    {
+        $count = Committee::count();
+        return response()->json($count);
+    }
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -50,12 +56,12 @@ class CommitteeController extends Controller
                 'explanation' => $request->input('explanation')
             ]);
 
-        return response()->json($committee);
+        return response()->json($committee, 201);
     }
 
     public function destroy($id)
     {
-        Committee::where('id', $id)->delete();
+        Committee::find($id)->delete();
         return response()->json(['message' => 'Committee deleted successfully'], 204);
     }
 }
