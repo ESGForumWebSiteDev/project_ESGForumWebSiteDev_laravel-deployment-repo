@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Member extends Model
+class Member extends Authenticatable implements JWTSubject
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens;
 
     protected $fillable = [
         'name',
@@ -53,7 +55,7 @@ class Member extends Model
      */
     public function getJWTIdentifier()
     {
-        return (string)$this->getKey();
+        return (string) $this->getKey();
     }
 
     /**
@@ -67,7 +69,9 @@ class Member extends Model
     }
 
     /**
-     * 관리자 여부 판단
+     * Check if the user is an admin.
+     * 
+     * @return bool
      */
     public function isAdmin()
     {
