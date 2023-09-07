@@ -22,6 +22,12 @@ class Member extends Authenticatable implements JWTSubject
 
     protected $primaryKey = 'id';
 
+    protected $attributes = [
+        'password' => 'applicant',
+        'authority' => -1,
+        'note' => null
+    ];
+
     public function committeeMembers()
     {
         return $this->hasMany(CommitteeMember::class, 'id2');
