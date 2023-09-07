@@ -198,4 +198,14 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     Route::get('/members', [MemberController::class, 'index'])->name('api.members');
     Route::put('/members', [MemberController::class, 'update'])->name('api.members');
     Route::delete('/members/{id}', [MemberController::class, 'destroy'])->name('api.members');
+
+/**
+ * 회원 관련 API
+ */
+Route::get('/applicants', [MemberController::class, 'applicants'])->name('api.members');
+Route::get('/members', [MemberController::class, 'index'])->name('api.members');
+Route::post('/members', [MemberController::class, 'store'])->name('api.members');
+Route::put('/members', [MemberController::class, 'update'])->name('api.members');
+Route::delete('/members/{id}', [MemberController::class, 'destroy'])->name('api.members');
+Route::put('/members/approval', [MemberController::class, 'approval'])->name('api.members');
 });

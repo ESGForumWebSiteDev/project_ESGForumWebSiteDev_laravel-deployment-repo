@@ -9,8 +9,13 @@ class MemberController extends Controller
 {
     public function count()
     {
-        $count = Member::count();
-        return response()->json($count);
+        $members = Member::all()->count();
+        $applicants = Member::where('authority', null)->count();
+
+        return response()->json([
+            'members' => $members,
+            'applicants' => $applicants
+        ]);
     }
 
     public function index()
@@ -18,6 +23,21 @@ class MemberController extends Controller
         $members = Member::all();
 
         return response()->json($members);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'affiliation' => 'required|string'
+        ]);
+
+        $member = Member::create([
+            'name' => $request->input('name'),
+            'affiliation' => $request->input('affiliation'),
+        ]);
+
+        return response()->json($member, 201);
     }
 
     public function destroy($id)
@@ -41,7 +61,6 @@ class MemberController extends Controller
         return response()->json($newMembersInfo, 201);
     }
 
-
     /**
      * Admin 여부 확인
      * 
@@ -60,5 +79,24 @@ class MemberController extends Controller
                 'is_admin' => false,
             ]);
         }
+    }
+}
+    public function approval(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer',
+        ]);
+
+        Member::find($request->input('id'))
+            ->update(['authority' => 0]);
+
+        return response()->json('User approved successfully', 201);
+    }
+
+    public function applicants()
+    {
+        $applicants = Member::where('authority', null)->get();
+
+        return response()->json($applicants);
     }
 }

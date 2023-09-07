@@ -33,6 +33,8 @@ class CommitteeMemberController extends Controller
             $newMember = Member::create([
                 'name' => $request->input('name'),
                 'affiliation' => $request->input('affiliation'),
+                'authority' => -1,
+                'password' => 'temp'
             ]);
             
             $memberId = $newMember->id;
