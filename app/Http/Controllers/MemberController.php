@@ -40,4 +40,25 @@ class MemberController extends Controller
 
         return response()->json($newMembersInfo, 201);
     }
+
+
+    /**
+     * Admin 여부 확인
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function isAdmin()
+    {
+        $user = auth()->user();
+
+        if ($user && $user->isAdmin()) {
+            return response()->json([
+                'is_admin' => true,
+            ]);
+        } else {
+            return response()->json([
+                'is_admin' => false,
+            ]);
+        }
+    }
 }

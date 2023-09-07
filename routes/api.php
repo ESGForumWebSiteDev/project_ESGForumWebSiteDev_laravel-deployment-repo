@@ -27,7 +27,7 @@ Route::prefix('auth')->group(function () {
 
 Route::get('/business', [BusinessController::class, 'index'])->name('api.business');
 Route::get('/getMember', [CommitteeController::class, 'getMember'])->name('api.committees');
-Route::get('/isAdmin', [MemberController::class, 'isAdmin'])->middleware('auth:sanctum')->name('api.isAdmin');
+Route::get('/isAdmin', [MemberController::class, 'isAdmin'])->name('api.isAdmin');
 
 /**
  * Seminars API
