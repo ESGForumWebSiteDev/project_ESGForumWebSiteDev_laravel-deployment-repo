@@ -12,7 +12,7 @@ class CommitteeController extends Controller
         $count = Committee::count();
         return response()->json($count);
     }
-    
+
     public function store(Request $request)
     {
         $request->validate([
@@ -63,5 +63,12 @@ class CommitteeController extends Controller
     {
         Committee::find($id)->delete();
         return response()->json(['message' => 'Committee deleted successfully'], 204);
+    }
+
+    public function getMember()
+    {
+        $committees = Committee::with('members')->get();
+
+        return response()->json($committees);
     }
 }
