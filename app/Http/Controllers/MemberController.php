@@ -98,4 +98,15 @@ class MemberController extends Controller
 
         return response()->json($applicants);
     }
+
+    public function profile()
+    {
+        $member = auth()->user();
+
+        if ($member) {
+            return response()->json($member);
+        } else {
+            return response()->json(['error' => 'Not logged in'], 401);
+        }
+    }
 }
