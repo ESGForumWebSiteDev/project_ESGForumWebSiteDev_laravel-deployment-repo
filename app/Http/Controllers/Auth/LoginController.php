@@ -19,6 +19,13 @@ class LoginController extends Controller
     $credentials = $request->only('email', 'password');
     $member = Member::where('email', $credentials['email'])->first();
 
+    if ($member->authority === env('REJECTED_MEMBER')) {
+      return response()->json([
+        'success' => false,
+        'error' => '로그인을 할 수 없는 유저입니다. 관리자에게 문의해주세요.'
+      ], 403);
+    }
+
     if ($member && $member->authority !== null && ($member->authority == 0 || $member->authority == 1)) {
       try {
         if ($token = JWTAuth::attempt($credentials)) {
