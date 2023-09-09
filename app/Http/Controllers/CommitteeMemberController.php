@@ -22,54 +22,51 @@ class CommitteeMemberController extends Controller
         $request->validate([
             'name' => 'required|string',
             'affiliation' => 'required|string',
-            'note' => 'sometimes|nullable|string|max:255',
         ]);
-        
+
         $existingMember = Member::where('name', $request->input('name'))
-        ->where('affiliation', $request->input('affiliation'))
-        ->first();
-        
+            ->where('affiliation', $request->input('affiliation'))
+            ->first();
+
         if (!$existingMember) {
             $newMember = Member::create([
                 'name' => $request->input('name'),
                 'affiliation' => $request->input('affiliation'),
-                'authority' => -1,
-                'password' => 'temp'
             ]);
-            
+
             $memberId = $newMember->id;
         } else {
             $memberId = $existingMember->id;
         }
-        
+
         $isMember = CommitteeMember::where('cId', $id)->where('id2', $memberId)->first();
 
         if ($isMember) {
-            return response()->json("", 403);
+            return response()->json('conflict with existing members', 409);
         }
-        
-        Committee::find($id)->members()->attach($memberId, ['note' => $request->input('note')]);
+
+        Committee::find($id)->members()->attach($memberId);
         $addedMember = Committee::find($id)->members()->where('id2', $memberId)->first();
-        
+
         return response()->json($addedMember, 201);
     }
 
     public function update($c_id, $m_id)
     {
         $existingChairmanId = CommitteeMember::where('cId', $c_id)
-            ->where('note', 1)
+            ->where('note', '위원장')
             ->first();
 
+
         if ($existingChairmanId) {
-            CommitteeMember::where('cId', $c_id)
-            ->where('note', 1)
-            ->update(['note' => null]);
+            $existingChairmanId->note = '일반 회원';
+            $existingChairmanId->save();
         }
 
         CommitteeMember::where('cId', $c_id)
             ->where('id2', $m_id)
-            ->update(['note' => 1]);
-            
+            ->update(['note' => '위원장']);
+
         $newMemberInfo = Committee::find($c_id)->members()->get();
 
         return response()->json($newMemberInfo, 201);
@@ -78,8 +75,8 @@ class CommitteeMemberController extends Controller
     public function destroy($c_id, $m_id)
     {
         Committee::find($c_id)->members()->detach([
-            'cId'=> $c_id,
-            'id2'=> $m_id,
+            'cId' => $c_id,
+            'id2' => $m_id,
         ]);
 
         return response()->json('Committee member deleted successfully', 204);
