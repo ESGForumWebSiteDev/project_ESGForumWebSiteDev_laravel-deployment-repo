@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 
 class AdminMiddleware
 {
+  const ADMIN_AUTHORITY = 1;
   public function handle(Request $request, Closure $next)
   {
-    if (auth()->check() && auth()->user()->isAdmin()) {
+    if (auth()->check() && auth()->user()->authority == self::ADMIN_AUTHORITY) {
       return $next($request);
     }
 

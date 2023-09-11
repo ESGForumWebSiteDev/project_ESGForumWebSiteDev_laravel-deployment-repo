@@ -21,14 +21,12 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('/login', [LoginController::class, 'login'])->name('api.login');
     Route::post('/register', [RegisterController::class, 'store'])->name('api.register');
-    Route::post('/logout', [LogoutController::class, 'logout'])->middleware(['auth:sanctum'])->name('api.logout');
+    Route::post('/logout', [LogoutController::class, 'logout'])->middleware('auth:api')->name('api.logout');
     Route::post('/refresh_token', [RefreshTokenController::class, 'refreshToken'])->name('api.refresh_token');
 });
 
 Route::get('/business', [BusinessController::class, 'index'])->name('api.business');
 Route::get('/getMember', [CommitteeController::class, 'getMember'])->name('api.committees');
-
-Route::get('/isAdmin', [MemberController::class, 'isAdmin'])->name('api.isAdmin');
 Route::get('/profile', [MemberController::class, 'profile'])->name('api.profile');
 
 /**
@@ -161,7 +159,8 @@ Route::delete(
 /**
  * Admin API
  */
-Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+Route::middleware(['admin'])->group(function () {
+    Route::get('/isAdmin', [MemberController::class, 'isAdmin'])->name('api.isAdmin');
     /** 
      * Statistical data API 
      */
