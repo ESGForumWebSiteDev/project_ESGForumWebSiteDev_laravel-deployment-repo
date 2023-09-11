@@ -77,8 +77,7 @@ class MemberController extends Controller
     }
 
     /**
-     * Admin 여부 확인
-     * 
+     * Check if the user is admin
      * @return \Illuminate\Http\JsonResponse
      */
     public function isAdmin()
@@ -126,5 +125,16 @@ class MemberController extends Controller
         $applicants = Member::where('authority', null)->get();
 
         return response()->json($applicants);
+    }
+
+    public function profile()
+    {
+        $member = auth()->user();
+
+        if ($member) {
+            return response()->json($member);
+        } else {
+            return response()->json(['error' => 'Not logged in'], 401);
+        }
     }
 }
