@@ -7,9 +7,10 @@ use App\Models\Member;
 
 class MemberController extends Controller
 {
+
     public function count()
     {
-        $members = Member::all()->count();
+        $members = Member::whereIn('authority', [-1, 0])->orWhereNull('authority')->count();
         $applicants = Member::where('authority', null)->count();
 
         return response()->json([
@@ -20,7 +21,7 @@ class MemberController extends Controller
 
     public function index()
     {
-        $members = Member::all();
+        $members = Member::whereIn('authority', [-1, 0])->orWhereNull('authority')->get();
 
         return response()->json($members);
     }
@@ -32,19 +33,33 @@ class MemberController extends Controller
             'affiliation' => 'required|string'
         ]);
 
+        $isMember = Member::where('name', $request->input('name'))
+            ->where('affiliation', $request->input('affiliation'))
+            ->first();
+
+        if ($isMember) {
+            return response()->json('conflict with existing members', 409);
+        }
+
         $member = Member::create([
             'name' => $request->input('name'),
             'affiliation' => $request->input('affiliation'),
         ]);
 
-        return response()->json($member, 201);
+        $memberWithAllColumns = Member::find($member->id);
+
+        return response()->json($memberWithAllColumns, 201);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        Member::where('id', $id)->delete();
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'required|integer',
+        ]);
 
-        return response()->json(['message' => 'Committee deleted successfully'], 204);
+        Member::whereIn('id', $request->input('ids'))->delete();
+        return response()->json(['message' => 'Member deleted successfully'], 204);
     }
 
     public function update(Request $request)
@@ -83,13 +98,26 @@ class MemberController extends Controller
     public function approval(Request $request)
     {
         $request->validate([
-            'id' => 'required|integer',
+            'ids' => 'required|array',
+            'ids.*' => 'required|integer',
         ]);
 
-        Member::find($request->input('id'))
+        Member::whereIn('id', $request->input('ids'))
             ->update(['authority' => 0]);
 
-        return response()->json('User approved successfully', 201);
+        return response()->json('Member approved successfully', 201);
+    }
+    public function rejection(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'required|integer',
+        ]);
+
+        Member::whereIn('id', $request->input('ids'))
+            ->update(['authority' => env('REJECTED_MEMBER')]);
+
+        return response()->json('Member rejected successfully', 201);
     }
 
     public function applicants()

@@ -11,7 +11,9 @@ class CommitteeMember extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'note'
+    ];
 
     // 상위 위원회 정보
     public function committee()
