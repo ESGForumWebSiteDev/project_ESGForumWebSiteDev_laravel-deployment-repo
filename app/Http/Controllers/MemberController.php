@@ -7,9 +7,10 @@ use App\Models\Member;
 
 class MemberController extends Controller
 {
+
     public function count()
     {
-        $members = Member::where('authority', '<>', env('REJECTED_MEMBER'))->count();
+        $members = Member::whereIn('authority', [-1, 0])->orWhereNull('authority')->count();
         $applicants = Member::where('authority', null)->count();
 
         return response()->json([
@@ -20,7 +21,7 @@ class MemberController extends Controller
 
     public function index()
     {
-        $members = Member::where('authority', '<>', env('REJECTED_MEMBER'))->get();
+        $members = Member::whereIn('authority', [-1, 0])->orWhereNull('authority')->get();
 
         return response()->json($members);
     }
@@ -34,8 +35,7 @@ class MemberController extends Controller
 
         $isMember = Member::where('name', $request->input('name'))
             ->where('affiliation', $request->input('affiliation'))
-            ->where('authority', '<>', env('REJECTED_MEMBER'))
-            ->get();
+            ->first();
 
         if ($isMember) {
             return response()->json('conflict with existing members', 409);
@@ -46,7 +46,9 @@ class MemberController extends Controller
             'affiliation' => $request->input('affiliation'),
         ]);
 
-        return response()->json($member, 201);
+        $memberWithAllColumns = Member::find($member->id);
+
+        return response()->json($memberWithAllColumns, 201);
     }
 
     public function destroy(Request $request)
