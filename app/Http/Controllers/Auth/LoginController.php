@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Models\Member;
 use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -19,29 +18,32 @@ class LoginController extends Controller
     $credentials = $request->only('email', 'password');
     $member = Member::where('email', $credentials['email'])->first();
 
-    if ($member->authority === env('REJECTED_MEMBER')) {
+    if ($member->authority === 2) {
       return response()->json([
         'success' => false,
         'error' => '로그인을 할 수 없는 유저입니다. 관리자에게 문의해주세요.'
       ], 403);
     }
+    
+    $isAdmin = ($member->authority === 1);
 
-    if ($member && $member->authority !== null && ($member->authority == 0 || $member->authority == 1)) {
+    if ($member) {
       try {
         if ($token = JWTAuth::attempt($credentials)) {
           $refreshToken = JWTAuth::fromUser($member, ['exp' => now()->addDays(30)->timestamp]);
-
+          
           $member->refresh_token = $refreshToken;
           $member->save();
-
+          
           return response()->json([
             'success' => true,
             'message' => '로그인 성공!',
             'token' => $token,
             'refreshToken' => $refreshToken,
+            'isAdmin' => $isAdmin
           ], 200);
         }
-
+        
         return response()->json([
           'success' => false,
           'error' => '이메일 또는 비밀번호가 올바르지 않습니다.'
