@@ -159,7 +159,7 @@ Route::delete(
 /**
  * Admin API
  */
-Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+Route::middleware(['admin'])->group(function () {
   /** 
    * Statistical data API 
    */
@@ -182,7 +182,7 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
   Route::get('/committee/{id}/members', [CommitteeMemberController::class, 'index'])->name('api.committees');
   Route::post('/committee/{id}/members', [CommitteeMemberController::class, 'store'])->name('api.committees.members');
   Route::put('/committee/{c_id}/members/{m_id}', [CommitteeMemberController::class, 'update'])->name('api.committees.members');
-  Route::delete('/committee/{c_id}/members/{m_id}', [CommitteeMemberController::class, 'destroy'])->name('api.committees.members');
+  Route::delete('/committee/{c_id}/members', [CommitteeMemberController::class, 'destroy'])->name('api.committees.members');
 
   /**
    * Business API
