@@ -152,7 +152,7 @@ Route::post(
 
 Route::delete(
   '/upload',
-  [FileController::class, 'destory']
+  [FileController::class, 'destroy']
 )->name('api.upload');
 
 
