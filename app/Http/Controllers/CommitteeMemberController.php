@@ -72,13 +72,14 @@ class CommitteeMemberController extends Controller
         return response()->json($newMemberInfo, 201);
     }
 
-    public function destroy($c_id, $m_id)
+    public function destroy($c_id, Request $request)
     {
-        Committee::find($c_id)->members()->detach([
-            'cId' => $c_id,
-            'id2' => $m_id,
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'required|integer',
         ]);
 
+        CommitteeMember::where('cId', $c_id)->whereIn('id2', $request->input('ids'))->delete();
         return response()->json('Committee member deleted successfully', 204);
     }
 }
