@@ -14,6 +14,7 @@ class RegisterController extends Controller
    */
   public function store(RegisterRequest $request)
   {
+    $MEMBER = config('MEMBER');
     $isMember = Member::where('email', $request->input('email'))->first();
 
     if ($isMember) {
@@ -21,24 +22,24 @@ class RegisterController extends Controller
         'error' => '이미 사용되고 있는 이메일 입니다.'
       ], 409);
     }
-
+    
     $member = Member::where('name', $request->input('name'))
-      ->where('affiliation', $request->input('affiliation'))
-      ->where('authority', env('NON_APPLICANT'))
-      ->first();
-
+    ->where('affiliation', $request->input('affiliation'))
+    ->where('authority', env('NON_APPLICANT'))
+    ->first();
+    
     // 관리자가 추가하지 않은 맴버
     if (!$member) {
       $member = Member::create([
         'name' => $request->name,
         'affiliation' => $request->affiliation,
-        'authority' => env('MEMBER'),
+        'authority' => $MEMBER,
         'email' => $request->email,
         'password' => Hash::make($request->password),
       ]);
     } else {
-
-      if ($member->email) {
+      
+      if ($member->authority === $MEMBER) {
         return response()->json([
           'error' => '이미 가입된 정보입니다.'
         ], 409);
@@ -46,7 +47,7 @@ class RegisterController extends Controller
       // 관리자가 추가한 맴버
       $member->email = $request->email;
       $member->password = Hash::make($request->password);
-      $member->authority = env('MEMBER');
+      $member->authority = $MEMBER;
       $member->save();
     }
 
