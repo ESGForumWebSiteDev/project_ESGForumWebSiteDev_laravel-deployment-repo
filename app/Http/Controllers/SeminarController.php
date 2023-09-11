@@ -122,11 +122,11 @@ class SeminarController extends Controller
     $request->validate([
       'date_start' => 'required|date',
       'date_end' => 'required|date',
-      'location' => 'required|string|max:40',
-      'subject' => 'required|string|max:40',
-      'host' => 'required|string|max:40',
-      'supervision' => 'required|string|max:40',
-      'participation' => 'required|string|max:40',
+      'location' => 'required|string|max:255',
+      'subject' => 'required|string|max:255',
+      'host' => 'required|string|max:255',
+      'supervision' => 'required|string:max:255',
+      'participation' => 'required|string',
       'content' => 'required|string',
     ]);
   }
