@@ -18,7 +18,7 @@ return new class extends Migration
 
         Schema::table('members', function (Blueprint $table) {
             $table->string('password', 255)->default('no password');
-            $table->integer('authority')->default(-1);
+            $table->integer('authority')->nullable()->default(-1);
         });
     }
     
