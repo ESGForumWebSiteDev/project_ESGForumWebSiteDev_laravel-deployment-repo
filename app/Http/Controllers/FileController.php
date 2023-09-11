@@ -30,7 +30,7 @@ class FileController extends Controller
     return response()->json($url, 201);
   }
 
-  public function destory(Request $request)
+  public function destroy(Request $request)
   {
     $url = $request->input('url');
 
