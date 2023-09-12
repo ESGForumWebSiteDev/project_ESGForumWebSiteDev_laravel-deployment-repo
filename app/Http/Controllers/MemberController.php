@@ -115,7 +115,7 @@ class MemberController extends Controller
         ]);
 
         Member::whereIn('id', $request->input('ids'))
-            ->update(['authority' => env('REJECTED_MEMBER')]);
+            ->update(['authority' => 2]);
 
         return response()->json('Member rejected successfully', 201);
     }
