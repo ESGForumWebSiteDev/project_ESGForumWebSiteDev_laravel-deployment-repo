@@ -25,7 +25,7 @@ class RegisterController extends Controller
     
     $member = Member::where('name', $request->input('name'))
     ->where('affiliation', $request->input('affiliation'))
-    ->where('authority', env('NON_APPLICANT'))
+    ->where('authority', -1)
     ->first();
     
     // 관리자가 추가하지 않은 맴버

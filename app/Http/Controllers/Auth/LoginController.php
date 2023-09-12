@@ -24,6 +24,13 @@ class LoginController extends Controller
         'error' => '로그인을 할 수 없는 유저입니다. 관리자에게 문의해주세요.'
       ], 403);
     }
+
+    if ($member->authority === null) {
+      return response()->json([
+        'success' => false,
+        'error' => '가입이 아직 승인되지 않았습니다. 관리자에게 문의해주세요.'
+      ], 403);
+    }
     
     $isAdmin = ($member->authority === 1);
 
