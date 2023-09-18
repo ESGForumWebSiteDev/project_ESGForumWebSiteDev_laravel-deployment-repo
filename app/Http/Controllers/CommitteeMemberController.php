@@ -19,10 +19,14 @@ class CommitteeMemberController extends Controller
 
     public function store($id, Request $request)
     {
-        $request->validate([
+        $validation = $this->myValidate($request, [
             'name' => 'required|string',
             'affiliation' => 'required|string',
         ]);
+
+        if (!$validation['success']) {
+            return response()->json($validation['error'], 422);
+        }
 
         $existingMember = Member::where('name', $request->input('name'))
             ->where('affiliation', $request->input('affiliation'))
@@ -74,10 +78,14 @@ class CommitteeMemberController extends Controller
 
     public function destroy($c_id, Request $request)
     {
-        $request->validate([
+        $validation = $this->myValidate($request, [
             'ids' => 'required|array',
             'ids.*' => 'required|integer',
         ]);
+
+        if (!$validation['success']) {
+            return response()->json($validation['error'], 422);
+        }
 
         CommitteeMember::where('cId', $c_id)->whereIn('id2', $request->input('ids'))->delete();
         return response()->json('Committee member deleted successfully', 204);

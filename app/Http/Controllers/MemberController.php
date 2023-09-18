@@ -53,10 +53,14 @@ class MemberController extends Controller
 
     public function destroy(Request $request)
     {
-        $request->validate([
+        $validation = $this->myValidate($request, [
             'ids' => 'required|array',
             'ids.*' => 'required|integer',
         ]);
+
+        if (!$validation['success']) {
+            return response()->json($validation['error'], 422);
+        }
 
         Member::whereIn('id', $request->input('ids'))->delete();
         return response()->json(['message' => 'Member deleted successfully'], 204);
@@ -64,10 +68,14 @@ class MemberController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate([
+        $validation = $this->myValidate($request, [
             'id' => 'required|integer',
             'note' => 'required|string'
         ]);
+
+        if (!$validation['success']) {
+            return response()->json($validation['error'], 422);
+        }
 
         Member::find($request->input('id'))->update(['note' => $request->input('note')]);
 
@@ -97,10 +105,14 @@ class MemberController extends Controller
 
     public function approval(Request $request)
     {
-        $request->validate([
+        $validation = $this->myValidate($request, [
             'ids' => 'required|array',
             'ids.*' => 'required|integer',
         ]);
+
+        if (!$validation['success']) {
+            return response()->json($validation['error'], 422);
+        }
 
         Member::whereIn('id', $request->input('ids'))
             ->update(['authority' => 0]);
@@ -109,10 +121,14 @@ class MemberController extends Controller
     }
     public function rejection(Request $request)
     {
-        $request->validate([
+        $validation = $this->myValidate($request, [
             'ids' => 'required|array',
             'ids.*' => 'required|integer',
         ]);
+
+        if (!$validation['success']) {
+            return response()->json($validation['error'], 422);
+        }
 
         Member::whereIn('id', $request->input('ids'))
             ->update(['authority' => 2]);

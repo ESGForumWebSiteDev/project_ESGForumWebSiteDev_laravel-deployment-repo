@@ -15,10 +15,14 @@ class CommitteeController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validation = $this->myValidate($request, [
             'name' => 'required|string|max:255',
             'explanation' => 'required|string',
         ]);
+
+        if (!$validation['success']) {
+            return response()->json($validation['error'], 422);
+        }
 
         $committee = Committee::create($request->all());
 
@@ -45,10 +49,14 @@ class CommitteeController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validation = $this->myValidate($request, [
             'name' => 'required|string|max:255',
             'explanation' => 'required|string',
         ]);
+
+        if (!$validation['success']) {
+            return response()->json($validation['error'], 422);
+        }
 
         $committee = Committee::where('id', $id)
             ->update([
